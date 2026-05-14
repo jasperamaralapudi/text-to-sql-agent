@@ -13,3 +13,10 @@
 - Broke: Didn't understand how queries must run, tried to learn
 - Key learning: 3-table joins (Genre→Track→InvoiceLine), self-join on Employee table
 - Tomorrow: First LangChain call — PromptTemplate + make LLM generate SQL
+
+## Day 4
+- Did: Built PromptTemplate chain, Gemini generating SQL from plain English
+- Works: 4/5 questions perfectly correct
+- Issue: Playlist query returns duplicates — data quality problem in DB
+- Key learning: Relationships in schema prompt are critical for JOIN accuracy
+- Tomorrow: Read LangChain agents docs, understand ReAct loop
