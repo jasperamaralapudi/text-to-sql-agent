@@ -61,4 +61,8 @@ run("Top 5 customers by spending", """
     LIMIT 5
 """)
 
+run("Names of customers","""
+    select FirstName, LastName from customer
+""")
+
 conn.close()
