@@ -9,5 +9,5 @@ llm = ChatGoogleGenerativeAI(
     google_api_key=os.getenv("GOOGLE_API_KEY")
 )
 
-response = llm.invoke("Tell me about Jesus Christ")
+response = llm.invoke("Say hello in one sentence.")
 print(response.content)
