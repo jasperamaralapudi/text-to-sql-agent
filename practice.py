@@ -1,5 +1,5 @@
-from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
+from dotenv import load_dotenv # type: ignore
+from langchain_google_genai import ChatGoogleGenerativeAI # type: ignore
 import os
 load_dotenv()
 llm=ChatGoogleGenerativeAI(
