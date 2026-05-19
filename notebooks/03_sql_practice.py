@@ -1,5 +1,5 @@
 import sqlite3
-import pandas as pd
+import pandas as pd # type: ignore
 
 conn = sqlite3.connect("data/Chinook_Sqlite.sqlite")
 

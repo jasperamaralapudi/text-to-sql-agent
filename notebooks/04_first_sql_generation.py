@@ -1,9 +1,9 @@
 import sqlite3
-import pandas as pd
-from dotenv import load_dotenv
+import pandas as pd # type: ignore
+from dotenv import load_dotenv # type: ignore
 import os
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.prompts import PromptTemplate
+from langchain_google_genai import ChatGoogleGenerativeAI # type: ignore
+from langchain_core.prompts import PromptTemplate # type: ignore
 
 load_dotenv()
 
