@@ -33,3 +33,11 @@
 - In THIS project, what will the "tool" be? : IN Text-to-SQL Project the tool will be query execution tool that allows agents to run SQL queries on a database
 - When a user asks "who is the top customer?", what does the agent do step by step? : User query -> Reason: Understand query and plan how to do it. -> Act: Run SQL query on the database ->  Observe: Get the answer -> Reason: Have I got the answer, if no go to action again, if yes give output. -> Final Answer
 - Tomorrow: Build pipeline_v1.py, first end-to-end working script.
+
+## Week 1 Wrap-up
+- Built: End-to-end pipeline — question → Gemini → SQL → SQLite → results
+- Works well: Simple queries, JOINs, aggregations, self-joins, percentage calc
+- Issues noted: Rate limit 5 req/min on free tier, ugly column name on Q6
+- Key learning: Schema + relationships in prompt = accurate JOIN generation
+- Next week (Week 2): Deep dive Chinook, write 20 SQL queries, 
+  understand RAG concept before building it
