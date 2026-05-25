@@ -41,3 +41,9 @@
 - Key learning: Schema + relationships in prompt = accurate JOIN generation
 - Next week (Week 2): Deep dive Chinook, write 20 SQL queries, 
   understand RAG concept before building it
+
+  ## Day 8 — 25 May, 2026
+- Did: 11 SQL queries including nested subquery in HAVING, ROW_NUMBER window function
+- Key insight: Q10a vs Q10b handle ties differently — subquery returns all ties, ROW_NUMBER picks one
+- Bug noted: Q2 alias in WHERE — should use Milliseconds >= 300000 directly
+- Tomorrow: 10 business queries + read vanna-ai GitHub repo
