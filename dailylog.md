@@ -47,3 +47,14 @@
 - Key insight: Q10a vs Q10b handle ties differently — subquery returns all ties, ROW_NUMBER picks one
 - Bug noted: Q2 alias in WHERE — should use Milliseconds >= 300000 directly
 - Tomorrow: 10 business queries + read vanna-ai GitHub repo
+
+## Day 9- 29 May, 2026
+- Did: Ran 10 Business Queries and read github vanna.ai readme
+- Broke: Had no time , so copied queries from Claude, but learned what I did
+- Key Learnings:
+  1. **What it does:** Vanna is an open-source text-to-SQL framework that converts natural-language questions into SQL using a RAG-style approach: it retrieves relevant schema, documentation, and past question→SQL examples, then feeds them to an LLM to generate queries. Recent Vanna 2.0 also adds user-aware permissions, streaming tables/charts, and a production-ready chat interface. ([GitHub][1])
+
+  2. **How it differs from my pipeline:** If your pipeline is the typical *schema → prompt → LLM → SQL* flow, Vanna is more retrieval-centric. It stores DDL, documentation, and successful query examples in a vector store and retrieves them at inference time rather than relying mainly on a static prompt. Vanna 2.0 also treats text-to-SQL as part of a broader agent system with permissions, tools, memory, and UI components. 
+
+  3. **What I'd borrow from it:** I would borrow its retrieval strategy—especially storing validated question→SQL pairs and business documentation as reusable context—plus its idea of learning from successful interactions over time ("tool memory"). Those two features are likely to improve SQL accuracy more than simply using a larger model. 
+- Tomorrow: Schema Documentation - RAG knowledge database
