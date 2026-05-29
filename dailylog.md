@@ -69,3 +69,23 @@
   3. Employee.ReportsTo is a self-reference - need LEFT JOIN same 
     table twice for manager queries.
 - Tomorrow: RAG concepts - embeddings, FAISS, ChromaDB. Reading + video, no code.
+
+## Day 11 — RAG + FAISS + ChromaDB concepts
+
+1. What is an embedding?\
+   Text embeddings are numerical representation vectors of a text that allows computers to find 
+   similar text even when exact words differ. Similar texts are near, different texts are apart. The vector dimensions are fixed (e.g. Gemini embeddings = 768 numbers). Every piece of text, regardless of length, becomes the same size vector.
+
+2. What is similarity search?\
+   Similarity search is the process of finding stored vectors that are similar to query vectors.
+
+3. How does RAG work? (step by step in your own words)\
+   user question -> embedding -> similarity search in vectordb -> retrieve schema docs -> build prompt -> LLM gives SQL -> Runs it on database -> returns results
+
+4. FAISS vs ChromaDB — one key difference?\
+   ChromaDB is a vector database while faiss is a vector search framework. FAISS lives in memory (lost on restart), ChromaDB saves to disk (survives restarts).
+
+5. How will RAG help MY Text-to-SQL project specifically?
+   [think: what happens when a DB has 50 tables -
+   you can't dump the full schema every time]\
+   When a DB has many tables, if we retrieve every schema doc it wastes the tokens and canconfuse the model. RAG helps retrieve relavant docs, relationships, information which allows LLM to generate accurate SQL.
