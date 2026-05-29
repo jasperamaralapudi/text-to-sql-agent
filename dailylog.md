@@ -89,3 +89,10 @@
    [think: what happens when a DB has 50 tables -
    you can't dump the full schema every time]\
    When a DB has many tables, if we retrieve every schema doc it wastes the tokens and canconfuse the model. RAG helps retrieve relavant docs, relationships, information which allows LLM to generate accurate SQL.
+
+## Day 12 
+- Did: 
+  - Created eval_questions.json with 20 verified question-SQL pairs
+  - Distribution: 8 simple, 7 medium, 5 hard
+  - These become the foundation of the 100-question eval set in Week 6
+- Tomorrow: Fix pipeline_v1 - rate limiting + clean column names

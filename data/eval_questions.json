@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "difficulty": "simple",
+    "question": "List all customers from Brazil",
+    "sql": "SELECT FirstName, LastName, Email FROM Customer WHERE Country = 'Brazil'",
+    "expected_rows": 5
+  },
+  {
+    "id": 2,
+    "difficulty": "simple",
+    "question": "How many customers does each country have?",
+    "sql": "SELECT Country, COUNT(Country) as CustomerCount FROM Customer GROUP BY Country ORDER BY CustomerCount DESC",
+    "expected_rows": 24
+  },
+  {
+    "id": 3,
+    "difficulty": "simple",
+    "question": "What is the total sales revenue per country?",
+    "sql": "SELECT BillingCountry, ROUND(SUM(Total), 2) as TotalSales FROM Invoice GROUP BY BillingCountry",
+    "expected_rows": 24
+  },
+  {
+    "id": 4,
+    "difficulty": "simple",
+    "question": "What is the average invoice total per country?",
+    "sql": "SELECT BillingCountry, ROUND(AVG(Total), 2) as AvgOrderValue FROM Invoice GROUP BY BillingCountry ORDER BY AvgOrderValue DESC",
+    "expected_rows": 24
+  },
+  {
+    "id": 5,
+    "difficulty": "simple",
+    "question": "What are the top 5 longest tracks in minutes?",
+    "sql": "SELECT Name, ROUND(Milliseconds / 60000.0, 2) as Minutes FROM Track ORDER BY Milliseconds DESC LIMIT 5",
+    "expected_rows": 5
+  },
+  {
+    "id": 6,
+    "difficulty": "simple",
+    "question": "What was the best single month for revenue ever?",
+    "sql": "SELECT strftime('%Y-%m', InvoiceDate) as YearMonth, ROUND(SUM(Total), 2) as Revenue FROM Invoice GROUP BY YearMonth ORDER BY Revenue DESC LIMIT 1",
+    "expected_rows": 1
+  },
+  {
+    "id": 7,
+    "difficulty": "simple",
+    "question": "What is the total revenue per month across all years?",
+    "sql": "SELECT strftime('%m', InvoiceDate) as Month, ROUND(SUM(Total), 2) as Revenue FROM Invoice GROUP BY Month ORDER BY Month",
+    "expected_rows": 12
+  },
+  {
+    "id": 8,
+    "difficulty": "simple",
+    "question": "Which customers have made more than 5 purchases?",
+    "sql": "SELECT FirstName || ' ' || LastName as Customer, COUNT(i.InvoiceId) as Purchases FROM Customer c JOIN Invoice i ON c.CustomerId = i.CustomerId GROUP BY c.CustomerId HAVING Purchases > 5 ORDER BY Purchases DESC",
+    "expected_rows": 8
+  },
+  {
+    "id": 9,
+    "difficulty": "medium",
+    "question": "Which employees support the most customers?",
+    "sql": "SELECT e.FirstName || ' ' || e.LastName as EmpName, COUNT(c.CustomerId) as NumCustomers FROM Customer c JOIN Employee e ON e.EmployeeId = c.SupportRepId GROUP BY e.EmployeeId ORDER BY NumCustomers DESC",
+    "expected_rows": 3
+  },
+  {
+    "id": 10,
+    "difficulty": "medium",
+    "question": "List all albums with their artist names sorted alphabetically by artist",
+    "sql": "SELECT al.Title as Album, ar.Name as Artist FROM Album al JOIN Artist ar ON al.ArtistId = ar.ArtistId ORDER BY ar.Name",
+    "expected_rows": 347
+  },
+  {
+    "id": 11,
+    "difficulty": "medium",
+    "question": "What are the top 10 best selling tracks by quantity sold?",
+    "sql": "SELECT t.Name, SUM(il.Quantity) as TotalSold FROM Track t JOIN InvoiceLine il ON t.TrackId = il.TrackId GROUP BY t.TrackId ORDER BY TotalSold DESC LIMIT 10",
+    "expected_rows": 10
+  },
+  {
+    "id": 12,
+    "difficulty": "medium",
+    "question": "Which sales rep generated the most revenue from their customers?",
+    "sql": "SELECT e.FirstName || ' ' || e.LastName as SalesRep, ROUND(SUM(i.Total), 2) as TotalCustomerSpend FROM Employee e JOIN Customer c ON c.SupportRepId = e.EmployeeId JOIN Invoice i ON i.CustomerId = c.CustomerId GROUP BY e.EmployeeId ORDER BY TotalCustomerSpend DESC",
+    "expected_rows": 3
+  },
+  {
+    "id": 13,
+    "difficulty": "medium",
+    "question": "What is the average revenue per customer by country?",
+    "sql": "SELECT Country, ROUND(AVG(CustomerTotal), 2) as AvgRevenuePerCustomer FROM (SELECT c.Country, SUM(i.Total) as CustomerTotal FROM Customer c JOIN Invoice i ON c.CustomerId = i.CustomerId GROUP BY c.CustomerId) GROUP BY Country ORDER BY AvgRevenuePerCustomer DESC",
+    "expected_rows": 24
+  },
+  {
+    "id": 14,
+    "difficulty": "medium",
+    "question": "Who is the top spending customer in each country?",
+    "sql": "SELECT Country, CustomerName, TotalSpent FROM (SELECT c.Country, c.FirstName || ' ' || c.LastName as CustomerName, ROUND(SUM(i.Total), 2) as TotalSpent, ROW_NUMBER() OVER (PARTITION BY c.Country ORDER BY SUM(i.Total) DESC) as rn FROM Customer c JOIN Invoice i ON c.CustomerId = i.CustomerId GROUP BY c.CustomerId) ranked WHERE rn = 1 ORDER BY Country",
+    "expected_rows": 24
+  },
+  {
+    "id": 15,
+    "difficulty": "medium",
+    "question": "How many tracks does each genre have?",
+    "sql": "SELECT g.Name, COUNT(t.TrackId) as TrackCount FROM Genre g JOIN Track t ON g.GenreId = t.GenreId GROUP BY g.GenreId ORDER BY TrackCount DESC",
+    "expected_rows": 25
+  },
+  {
+    "id": 16,
+    "difficulty": "hard",
+    "question": "Which customers spent more than the average customer spending?",
+    "sql": "SELECT c.FirstName || ' ' || c.LastName as CustomerName, ROUND(SUM(i.Total), 2) as TotalSpent FROM Customer c JOIN Invoice i ON i.CustomerId = c.CustomerId GROUP BY c.CustomerId HAVING SUM(i.Total) > (SELECT AVG(CustomerTotal) FROM (SELECT SUM(Total) as CustomerTotal FROM Invoice GROUP BY CustomerId)) ORDER BY TotalSpent DESC",
+    "expected_rows": 22
+  },
+  {
+    "id": 17,
+    "difficulty": "hard",
+    "question": "Which genre generates the most revenue?",
+    "sql": "SELECT g.Name, ROUND(SUM(il.UnitPrice * il.Quantity), 2) as Revenue FROM Genre g JOIN Track t ON g.GenreId = t.GenreId JOIN InvoiceLine il ON t.TrackId = il.TrackId GROUP BY g.GenreId ORDER BY Revenue DESC",
+    "expected_rows": 24
+  },
+  {
+    "id": 18,
+    "difficulty": "hard",
+    "question": "Which artist generated the highest total revenue?",
+    "sql": "SELECT ar.Name, ROUND(SUM(il.UnitPrice * il.Quantity), 2) as TotalRevenue FROM Artist ar JOIN Album al ON ar.ArtistId = al.ArtistId JOIN Track t ON al.AlbumId = t.AlbumId JOIN InvoiceLine il ON t.TrackId = il.TrackId GROUP BY ar.ArtistId ORDER BY TotalRevenue DESC LIMIT 1",
+    "expected_rows": 1
+  },
+  {
+    "id": 19,
+    "difficulty": "hard",
+    "question": "What is the revenue ranking of all artists?",
+    "sql": "SELECT ar.Name, ROUND(SUM(il.UnitPrice * il.Quantity), 2) as TotalRevenue FROM Artist ar JOIN Album al ON ar.ArtistId = al.ArtistId JOIN Track t ON al.AlbumId = t.AlbumId JOIN InvoiceLine il ON t.TrackId = il.TrackId GROUP BY ar.ArtistId ORDER BY TotalRevenue DESC",
+    "expected_rows": 204
+  },
+  {
+    "id": 20,
+    "difficulty": "hard",
+    "question": "Which genre has the most tracks sold?",
+    "sql": "SELECT g.Name, SUM(il.Quantity) as TotalQuantitySold FROM Genre g JOIN Track t ON g.GenreId = t.GenreId JOIN InvoiceLine il ON t.TrackId = il.TrackId GROUP BY g.GenreId ORDER BY TotalQuantitySold DESC LIMIT 1",
+    "expected_rows": 1
+  }
+]
