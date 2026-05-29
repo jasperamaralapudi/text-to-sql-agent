@@ -58,3 +58,14 @@
 
   3. **What I'd borrow from it:** I would borrow its retrieval strategy—especially storing validated question→SQL pairs and business documentation as reusable context—plus its idea of learning from successful interactions over time ("tool memory"). Those two features are likely to improve SQL accuracy more than simply using a larger model. 
 - Tomorrow: Schema Documentation - RAG knowledge database
+
+## Day 10 — 29 May, 2026
+- Did: Wrote rich schema documentation for all 11 Chinook tables
+- Key insight: 
+  1. InvoiceLine is the most important table for revenue queries -
+    Revenue = UnitPrice * Quantity. Everything traces back through here.
+  2. PlaylistTrack is a pure junction table - no extra columns, 
+    just links. Important to note so LLM doesn't try to SELECT non-existent columns.
+  3. Employee.ReportsTo is a self-reference - need LEFT JOIN same 
+    table twice for manager queries.
+- Tomorrow: RAG concepts - embeddings, FAISS, ChromaDB. Reading + video, no code.
