@@ -96,3 +96,12 @@
   - Distribution: 8 simple, 7 medium, 5 hard
   - These become the foundation of the 100-question eval set in Week 6
 - Tomorrow: Fix pipeline_v1 - rate limiting + clean column names
+
+## Week 2 Wrap-up
+- SQL skills: subqueries, HAVING, CASE WHEN, ROW_NUMBER, 3-table JOINs
+- RAG understood: embeddings → similarity search → retrieve → prompt → LLM
+- FAISS = in-memory, ChromaDB = persistent
+- schema_docs.md ready to become RAG vector store in Week 5
+- eval_questions.json: 20 verified pairs - foundation of Week 6 evaluation
+- pipeline_v2: no more crashes, clean output
+- Next week (Week 3): Build the real LangChain SQL agent
