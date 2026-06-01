@@ -105,3 +105,15 @@
 - eval_questions.json: 20 verified pairs - foundation of Week 6 evaluation
 - pipeline_v2: no more crashes, clean output
 - Next week (Week 3): Build the real LangChain SQL agent
+
+## WEEK 3 - Day 1
+- Did: Built auto schema extractor (src/schema_extractor.py) using SQLite PRAGMA commands
+- How it works: PRAGMA table_info() reads column names, types, primary keys. PRAGMA foreign_key_list() reads foreign key relationships. Loops through all tables and builds a formatted string.
+- Output: 2511 characters describing all 11 Chinook tables with data types and FK relationships
+- Key insights: 
+  - PRAGMA commands are SQLite's built-in way to read DB metadata — no manual schema writing needed
+  - Data types (NVARCHAR, NUMERIC, DATETIME) are now included — helps LLM write more type-aware SQL
+  - Works on ANY SQLite DB — drop in a different database, schema auto-detected in seconds
+  - Also restored pipeline_v1.py to original basic version — no retry, no clean columns — serves as clean historical reference
+  - Comparison: v1 (basic) → v2 (retry + clean columns) → v3 (auto schema + validation + self-healing) — clear progression
+- Tomorrow: Create src/config.py to remove code duplication across pipeline files, then plug auto-schema in

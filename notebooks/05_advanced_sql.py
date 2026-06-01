@@ -22,9 +22,9 @@ run("Customers from Brazil", """
 # Q2
 run("Tracks longer than 5 minutes", """
     -- your SQL here
-    select name,(milliseconds)/30000 as Minutes 
+    select name,(milliseconds)/60000 as Minutes 
     from Track 
-    where minutes>=5 
+    where milliseconds>=300000
     order by minutes desc;
 """)
 

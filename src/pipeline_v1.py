@@ -1,14 +1,13 @@
 import sqlite3
-import pandas as pd # type: ignore
-from dotenv import load_dotenv # type: ignore
+import pandas as pd #type:ignore
 import os
-from langchain_google_genai import ChatGoogleGenerativeAI # type: ignore
-from langchain_core.prompts import PromptTemplate # type: ignore
-import time
+from dotenv import load_dotenv #type:ignore
+from langchain_google_genai import ChatGoogleGenerativeAI #type:ignore
+from langchain_core.prompts import PromptTemplate #type:ignore
+
 load_dotenv()
 
 # --- CONFIG ---
-import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "data", "Chinook_Sqlite.sqlite")
 
@@ -73,33 +72,36 @@ def run_sql(sql):
     except Exception as e:
         return None, str(e)
 
-# --- MAIN ASK FUNCTION ---
+# --- ASK FUNCTION — no error handling, no retry, no clean columns ---
 def ask(question):
     print(f"\n{'='*55}")
-    print(f" Question: {question}")
+    print(f"Question: {question}")
     print(f"{'='*55}")
 
-    # Step 1: Generate SQL
+    # Step 1: Generate SQL — no try/except, crashes on any error
     result = chain.invoke({"schema": SCHEMA, "question": question})
     sql = result.content.strip()
-    tokens_used = result.usage_metadata["input_tokens"] + result.usage_metadata["output_tokens"]
+    tokens_used = (
+        result.usage_metadata["input_tokens"] +
+        result.usage_metadata["output_tokens"]
+    )
 
-    print(f"\n Generated SQL:\n{sql}")
-    print(f"\n Tokens used: {tokens_used}")
+    print(f"\nGenerated SQL:\n{sql}")
+    print(f"Tokens used: {tokens_used}")
 
     # Step 2: Execute SQL
     df, error = run_sql(sql)
 
     if error:
-        print(f"\n SQL Error: {error}")
-        print("Tip: Try rephrasing your question.")
+        # No friendly message — just prints raw error
+        print(f"SQL Error: {error}")
         return
 
-    # Step 3: Show results
-    print(f"\n Result ({len(df)} rows):")
+    # Step 3: Print results — no column cleaning
+    print(f"\nResult ({len(df)} rows):")
     print(df.to_string())
 
-# --- TEST QUESTIONS ---
+# --- TEST ---
 if __name__ == "__main__":
     questions = [
         "Who are the top 5 artists by number of albums?",
@@ -113,7 +115,8 @@ if __name__ == "__main__":
 
     for q in questions:
         ask(q)
-        time.sleep(15)
+        # No time.sleep — will crash on 429 after question 5
+
     print(f"\n{'='*55}")
     print("Pipeline v1 complete.")
     print(f"{'='*55}")
