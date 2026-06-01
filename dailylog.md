@@ -79,7 +79,7 @@
 2. What is similarity search?\
    Similarity search is the process of finding stored vectors that are similar to query vectors.
 
-3. How does RAG work? (step by step in your own words)\
+3. How does RAG work? (step by step in own words)\
    user question -> embedding -> similarity search in vectordb -> retrieve schema docs -> build prompt -> LLM gives SQL -> Runs it on database -> returns results
 
 4. FAISS vs ChromaDB — one key difference?\
