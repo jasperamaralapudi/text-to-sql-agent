@@ -134,3 +134,12 @@
 - Key insight: Test 7 caught SQL injection pattern — valid SELECT followed by DROP TABLE. Blocklist scans the full string so it catches this even after a valid SELECT.
 - Key insight: clean_sql() is important — Gemini sometimes returns ```sql blocks even when told not to```
 - Tomorrow: sql_fixer.py — feed failed SQL + error back to LLM for auto-correction
+
+## WEEK 3 - Day 4
+- Did: Built sql_fixer.py — feeds failed SQL + error message back to LLM for auto-correction
+- Test 1: Typo in function name (COUTN → COUNT) — fixed
+- Test 2: Wrong table name (Customers → Customer) — fixed
+- Test 3: Wrong column name (Amount → Total) — fixed
+- Key insight: The error message gives the LLM exact context to fix the query — "no such column: Amount" tells it precisely what's wrong
+- Key insight: Must run with python -m src.sql_fixer from project root, not python src/sql_fixer.py — otherwise Python can't resolve src imports
+- Tomorrow: Run all 20 eval questions, score accuracy by difficulty, save results to eval_results_v1.json
