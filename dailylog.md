@@ -117,3 +117,11 @@
   - Also restored pipeline_v1.py to original basic version — no retry, no clean columns — serves as clean historical reference
   - Comparison: v1 (basic) → v2 (retry + clean columns) → v3 (auto schema + validation + self-healing) — clear progression
 - Tomorrow: Create src/config.py to remove code duplication across pipeline files, then plug auto-schema in
+
+## WEEK 3 - Day 2
+- Did: Created src/config.py — centralised DB path, LLM, prompt, chain. No more duplication across pipeline files.
+- Did: Tested auto-schema on 5 questions — all 5 correct, identical results to pipeline_v2
+- Finding: Auto-schema uses ~1000-1200 tokens vs ~550-650 for hardcoded schema (roughly 2x)
+- Reason: Auto-schema includes data types and FK details — more context for LLM
+- Key insight: This token tradeoff is exactly what RAG solves in Week 5 — retrieve only relevant tables instead of full schema
+- Tomorrow: sql_validator.py — safety checks + sqlparse validation before any SQL executes
