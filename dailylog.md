@@ -125,3 +125,12 @@
 - Reason: Auto-schema includes data types and FK details — more context for LLM
 - Key insight: This token tradeoff is exactly what RAG solves in Week 5 — retrieve only relevant tables instead of full schema
 - Tomorrow: sql_validator.py — safety checks + sqlparse validation before any SQL executes
+
+## WEEK 3 - Day 3
+- Did: Built sql_validator.py — two layers of protection before any SQL executes
+- Layer 1: Keyword blocklist — catches DROP, DELETE, UPDATE, INSERT, ALTER, TRUNCATE, CREATE, REPLACE
+- Layer 2: sqlparse type check — confirms query is SELECT only
+- Also built clean_sql() — strips markdown backticks LLMs sometimes wrap SQL in
+- Key insight: Test 7 caught SQL injection pattern — valid SELECT followed by DROP TABLE. Blocklist scans the full string so it catches this even after a valid SELECT.
+- Key insight: clean_sql() is important — Gemini sometimes returns ```sql blocks even when told not to```
+- Tomorrow: sql_fixer.py — feed failed SQL + error back to LLM for auto-correction
