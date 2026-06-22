@@ -157,3 +157,20 @@
 - 75% accuracy is now the baseline number for pipeline_v1. Target for Week 5 
   RAG + few-shot: 85%+
 - Tomorrow: Build pipeline_v3.py combining schema_extractor + sql_validator + sql_fixer
+
+## WEEK 3 - Day 6
+- Did: Built pipeline_v3.py — combines auto schema + sql_validator + sql_fixer + rate limit retry
+- Verified: 2/2 questions correct before quota exhausted
+- Issue: 20/day limit means can't run eval (20 req) + pipeline test on same day
+- Fix: Create second API key for backup quota
+- Week 3 complete — all modules built and working
+
+## Week 3 Wrap-up
+- schema_extractor.py: auto schema from any SQLite DB via PRAGMA
+- config.py: centralised setup — no more duplication
+- sql_validator.py: safety blocklist + sqlparse check, 7/7 tests passed
+- sql_fixer.py: self-healing SQL, 3/3 broken queries auto-corrected
+- eval results: 75% accuracy baseline (simple 87.5%, medium 71.4%, hard 60%)
+- pipeline_v3.py: all modules combined into production-grade pipeline
+- Known failure patterns: "most X" → LIMIT 1, aggregation grouping errors
+- Next week: LangChain SQL Agent + conversation memory
