@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "difficulty": "simple",
+    "question": "List all customers from Brazil",
+    "expected_rows": 5,
+    "generated_sql": "SELECT * FROM Customer WHERE Country = 'Brazil'",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 2,
+    "difficulty": "simple",
+    "question": "How many customers does each country have?",
+    "expected_rows": 24,
+    "generated_sql": "SELECT Country, COUNT(CustomerId) FROM Customer GROUP BY Country",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 3,
+    "difficulty": "simple",
+    "question": "What is the total sales revenue per country?",
+    "expected_rows": 24,
+    "generated_sql": "SELECT\n  BillingCountry,\n  SUM(Total)\nFROM Invoice\nGROUP BY\n  BillingCountry;",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 4,
+    "difficulty": "simple",
+    "question": "What is the average invoice total per country?",
+    "expected_rows": 24,
+    "generated_sql": "SELECT BillingCountry, AVG(Total) FROM Invoice GROUP BY BillingCountry",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 5,
+    "difficulty": "simple",
+    "question": "What are the top 5 longest tracks in minutes?",
+    "expected_rows": 5,
+    "generated_sql": "SELECT\n  Name,\n  CAST(Milliseconds AS REAL) / 60000 AS LengthInMinutes\nFROM Track\nORDER BY\n  LengthInMinutes DESC\nLIMIT 5;",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 6,
+    "difficulty": "simple",
+    "question": "What was the best single month for revenue ever?",
+    "expected_rows": 1,
+    "generated_sql": "SELECT\n  STRFTIME('%Y-%m', InvoiceDate) AS SalesMonth\nFROM Invoice\nGROUP BY\n  SalesMonth\nORDER BY\n  SUM(Total) DESC\nLIMIT 1",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 7,
+    "difficulty": "simple",
+    "question": "What is the total revenue per month across all years?",
+    "expected_rows": 12,
+    "generated_sql": "SELECT\n  strftime('%m', InvoiceDate) AS Month,\n  SUM(Total) AS TotalRevenue\nFROM Invoice\nGROUP BY\n  Month\nORDER BY\n  Month;",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 8,
+    "difficulty": "simple",
+    "question": "Which customers have made more than 5 purchases?",
+    "expected_rows": 8,
+    "generated_sql": "SELECT\n  C.CustomerId,\n  C.FirstName,\n  C.LastName\nFROM Customer AS C\nJOIN Invoice AS I\n  ON C.CustomerId = I.CustomerId\nGROUP BY\n  C.CustomerId,\n  C.FirstName,\n  C.LastName\nHAVING\n  COUNT(I.InvoiceId) > 5;",
+    "status": "wrong_rows",
+    "note": "Expected 8 rows, got 59"
+  },
+  {
+    "id": 9,
+    "difficulty": "medium",
+    "question": "Which employees support the most customers?",
+    "expected_rows": 3,
+    "generated_sql": "SELECT\n  T1.FirstName,\n  T1.LastName\nFROM Employee AS T1\nJOIN Customer AS T2\n  ON T1.EmployeeId = T2.SupportRepId\nGROUP BY\n  T1.EmployeeId\nHAVING\n  COUNT(T2.CustomerId) = (\n    SELECT\n      MAX(CustomerCount)\n    FROM (\n      SELECT\n        COUNT(T2.CustomerId) AS CustomerCount\n      FROM Employee AS T1\n      JOIN Customer AS T2\n        ON T1.EmployeeId = T2.SupportRepId\n      GROUP BY\n        T1.EmployeeId\n    )\n  );",
+    "status": "wrong_rows",
+    "note": "Expected 3 rows, got 1"
+  },
+  {
+    "id": 10,
+    "difficulty": "medium",
+    "question": "List all albums with their artist names sorted alphabetically by artist",
+    "expected_rows": 347,
+    "generated_sql": "SELECT\n  T1.Title,\n  T2.Name\nFROM Album AS T1\nINNER JOIN Artist AS T2\n  ON T1.ArtistId = T2.ArtistId\nORDER BY\n  T2.Name;",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 11,
+    "difficulty": "medium",
+    "question": "What are the top 10 best selling tracks by quantity sold?",
+    "expected_rows": 10,
+    "generated_sql": "SELECT\n  T.Name\nFROM Track AS T\nJOIN InvoiceLine AS IL\n  ON T.TrackId = IL.TrackId\nGROUP BY\n  T.TrackId,\n  T.Name\nORDER BY\n  SUM(IL.Quantity) DESC\nLIMIT 10;",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 12,
+    "difficulty": "medium",
+    "question": "Which sales rep generated the most revenue from their customers?",
+    "expected_rows": 3,
+    "generated_sql": "SELECT\n  E.FirstName,\n  E.LastName\nFROM Employee AS E\nJOIN Customer AS C\n  ON E.EmployeeId = C.SupportRepId\nJOIN Invoice AS I\n  ON C.CustomerId = I.CustomerId\nGROUP BY\n  E.EmployeeId\nORDER BY\n  SUM(I.Total) DESC\nLIMIT 1;",
+    "status": "wrong_rows",
+    "note": "Expected 3 rows, got 1"
+  },
+  {
+    "id": 13,
+    "difficulty": "medium",
+    "question": "What is the average revenue per customer by country?",
+    "expected_rows": 24,
+    "generated_sql": "SELECT\n  c.Country,\n  AVG(i.Total) AS AverageRevenuePerCustomer\nFROM Customer AS c\nJOIN Invoice AS i\n  ON c.CustomerId = i.CustomerId\nGROUP BY\n  c.Country;",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 14,
+    "difficulty": "medium",
+    "question": "Who is the top spending customer in each country?",
+    "expected_rows": 24,
+    "generated_sql": "WITH CustomerTotalSpending AS (\n  SELECT\n    C.CustomerId,\n    C.FirstName,\n    C.LastName,\n    C.Country,\n    SUM(I.Total) AS TotalSpent\n  FROM Customer AS C\n  JOIN Invoice AS I\n    ON C.CustomerId = I.CustomerId\n  GROUP BY\n    C.CustomerId,\n    C.FirstName,\n    C.LastName,\n    C.Country\n), RankedCustomerSpending AS (\n  SELECT\n    CustomerId,\n    FirstName,\n    LastName,\n    Country,\n    TotalSpent,\n    ROW_NUMBER() OVER (PARTITION BY Country ORDER BY TotalSpent DESC) AS RankNum\n  FROM CustomerTotalSpending\n)\nSELECT\n  FirstName,\n  LastName,\n  Country,\n  TotalSpent\nFROM RankedCustomerSpending\nWHERE\n  RankNum = 1;",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 15,
+    "difficulty": "medium",
+    "question": "How many tracks does each genre have?",
+    "expected_rows": 25,
+    "generated_sql": "SELECT\n  T2.Name,\n  COUNT(T1.TrackId)\nFROM Track AS T1\nINNER JOIN Genre AS T2\n  ON T1.GenreId = T2.GenreId\nGROUP BY\n  T2.Name;",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 16,
+    "difficulty": "hard",
+    "question": "Which customers spent more than the average customer spending?",
+    "expected_rows": 22,
+    "generated_sql": "SELECT\n  C.CustomerId,\n  C.FirstName,\n  C.LastName\nFROM Customer AS C\nJOIN Invoice AS I\n  ON C.CustomerId = I.CustomerId\nGROUP BY\n  C.CustomerId,\n  C.FirstName,\n  C.LastName\nHAVING\n  SUM(I.Total) > (\n    SELECT\n      AVG(CustomerTotal)\n    FROM (\n      SELECT\n        SUM(Total) AS CustomerTotal\n      FROM Invoice\n      GROUP BY\n        CustomerId\n    )\n  );",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 17,
+    "difficulty": "hard",
+    "question": "Which genre generates the most revenue?",
+    "expected_rows": 24,
+    "generated_sql": "SELECT\n  T3.Name\nFROM InvoiceLine AS T1\nINNER JOIN Track AS T2\n  ON T1.TrackId = T2.TrackId\nINNER JOIN Genre AS T3\n  ON T2.GenreId = T3.GenreId\nGROUP BY\n  T3.Name\nORDER BY\n  SUM(T1.UnitPrice * T1.Quantity) DESC\nLIMIT 1;",
+    "status": "wrong_rows",
+    "note": "Expected 24 rows, got 1"
+  },
+  {
+    "id": 18,
+    "difficulty": "hard",
+    "question": "Which artist generated the highest total revenue?",
+    "expected_rows": 1,
+    "generated_sql": "SELECT\n  T2.Name\nFROM InvoiceLine AS T1\nINNER JOIN Track AS T3\n  ON T1.TrackId = T3.TrackId\nINNER JOIN Album AS T4\n  ON T3.AlbumId = T4.AlbumId\nINNER JOIN Artist AS T2\n  ON T4.ArtistId = T2.ArtistId\nGROUP BY\n  T2.Name\nORDER BY\n  SUM(T1.UnitPrice * T1.Quantity) DESC\nLIMIT 1",
+    "status": "correct",
+    "note": ""
+  },
+  {
+    "id": 19,
+    "difficulty": "hard",
+    "question": "What is the revenue ranking of all artists?",
+    "expected_rows": 204,
+    "generated_sql": "SELECT\n  T3.Name,\n  SUM(T1.UnitPrice * T1.Quantity) AS TotalRevenue\nFROM InvoiceLine AS T1\nINNER JOIN Track AS T2\n  ON T1.TrackId = T2.TrackId\nINNER JOIN Album AS T4\n  ON T2.AlbumId = T4.AlbumId\nINNER JOIN Artist AS T3\n  ON T4.ArtistId = T3.ArtistId\nGROUP BY\n  T3.Name\nORDER BY\n  TotalRevenue DESC;",
+    "status": "wrong_rows",
+    "note": "Expected 204 rows, got 165"
+  },
+  {
+    "id": 20,
+    "difficulty": "hard",
+    "question": "Which genre has the most tracks sold?",
+    "expected_rows": 1,
+    "generated_sql": "SELECT T3.Name FROM InvoiceLine AS T1 INNER JOIN Track AS T2 ON T1.TrackId = T2.TrackId INNER JOIN Genre AS T3 ON T2.GenreId = T3.GenreId GROUP BY T3.Name ORDER BY SUM(T1.Quantity) DESC LIMIT 1",
+    "status": "correct",
+    "note": ""
+  }
+]

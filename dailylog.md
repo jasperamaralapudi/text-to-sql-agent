@@ -143,3 +143,17 @@
 - Key insight: The error message gives the LLM exact context to fix the query — "no such column: Amount" tells it precisely what's wrong
 - Key insight: Must run with python -m src.sql_fixer from project root, not python src/sql_fixer.py — otherwise Python can't resolve src imports
 - Tomorrow: Run all 20 eval questions, score accuracy by difficulty, save results to eval_results_v1.json
+
+## WEEK 3 - Day 5
+- Did: Full eval run completed — 15/20 correct, 75% accuracy
+- Breakdown: simple 87.5%, medium 71.4%, hard 60.0%
+- Failure Pattern 1 (3 failures — Q9, Q12, Q17): "most X" interpreted as LIMIT 1 
+  instead of full ranking. Confirmed same root cause across all 3.
+  → Fix: prompt-level instruction to return full ranking unless "top N" specified
+- Failure Pattern 2 (2 failures — Q8, Q19): Aggregation/join logic errors
+  → Q8: missing HAVING COUNT > 5, returned ungrouped rows
+  → Q19: INNER JOIN excluded artists with zero sales — should be LEFT JOIN
+  → Fix: needs few-shot examples in Week 5 RAG, not just prompt wording
+- 75% accuracy is now the baseline number for pipeline_v1. Target for Week 5 
+  RAG + few-shot: 85%+
+- Tomorrow: Build pipeline_v3.py combining schema_extractor + sql_validator + sql_fixer
